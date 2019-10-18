@@ -1,0 +1,41 @@
+{
+  "name": "gulp4-starter",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "gulp build --production --dest=build",
+    "start": "gulp"
+  },
+  "authors": "Dmitry Shakun",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "autoprefixer": "^9.6.5",
+    "babel-loader": "^8.0.6",
+    "browser-sync": "^2.26.7",
+    "cpy": "^7.3.0",
+    "css-mqpacker": "^7.0.0",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
+    "gulp-csso": "^3.0.1",
+    "gulp-debug": "^4.0.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-pretty-html": "^2.0.10",
+    "gulp-pug": "^4.0.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-svgmin": "^2.2.0",
+    "gulp-svgstore": "^7.0.1",
+    "gulp-util": "^3.0.8",
+    "jquery": "^3.4.1",
+    "postcss-inline-svg": "^4.1.0",
+    "terser-webpack-plugin": "^2.1.3",
+    "webpack": "^4.41.2",
+    "webpack-stream": "^5.2.1"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.6.0"
+  }
+}
