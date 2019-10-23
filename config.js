@@ -11,17 +11,11 @@ const config = {
   src: {
     root: 'src',
     templates: 'src/pages',
-    templatesData: 'src/templates/data',
-    pagelist: 'src/index.yaml',
     sass: 'src/sass',
     js: 'src/js',
     img: 'src/img',
-    svg: 'src/img/svg',
     icons: 'src/icons',
-    iconsSvg: 'src/icons',
-    fonts: 'src/fonts',
-    lib: 'src/lib',
-    data: 'src/data'
+    fonts: 'src/fonts'
   },
   dest: {
     root: destPath,
@@ -29,9 +23,7 @@ const config = {
     css: `${destPath}/css`,
     js: `${destPath}/js`,
     img: `${destPath}/img`,
-    fonts: `${destPath}/fonts`,
-    lib: `${destPath}/lib`,
-    data: `${destPath}/data`
+    fonts: `${destPath}/fonts`
   },
   addAssets: {
     'src/fonts/*.{woff,woff2}': '/fonts'
