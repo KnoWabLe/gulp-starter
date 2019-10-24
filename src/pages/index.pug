@@ -18,3 +18,31 @@ block content
         p col-lg-4
       .col-lg-4
         p col-lg-4
+
+    #modal-demo-01.modal(tabindex="-1", role="dialog")
+      .modal__dialog(role="document")
+        .modal__content
+          .modal__header
+            .close.modal__close(data-dismiss="modal" aria-label="Закрыть")
+            .modal__title Заголовок
+          .modal__body
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+            p Текст
+          .modal__footer
+            button.btn(type='button', data-dismiss='modal') Закрыть
+
+    .row
+      .col
+        button.btn(type="button" data-toggle="modal" data-target="#modal-demo-01") Показать модальное окно
