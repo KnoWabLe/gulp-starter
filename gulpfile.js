@@ -110,7 +110,7 @@ function generateSvgSprite(cb) {
   const spriteSvgPath = config.src.icons;
 
   if (fileExist(spriteSvgPath)) {
-    return src(`${config.src.iconsSvg}/*.svg`)
+    return src(`${config.src.icons}/*.svg`)
       .pipe(
         svgmin(function() {
           return { plugins: [{ cleanupIDs: { minify: true } }] };

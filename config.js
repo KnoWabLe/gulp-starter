@@ -26,7 +26,7 @@ const config = {
     fonts: `${destPath}/fonts`
   },
   addAssets: {
-    'src/fonts/*.{woff,woff2}': '/fonts'
+    'src/fonts/**/*.{woff,woff2}': '/fonts'
   },
 
   setEnv: function(env) {
