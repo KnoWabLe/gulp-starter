@@ -186,7 +186,7 @@ function buildJs() {
 exports.buildJs = buildJs;
 
 function clearBuildDir() {
-  return del(`${config.dest}/**/*`);
+  return del(`${config.dest.root}/**/*`);
 }
 exports.clearBuildDir = clearBuildDir;
 

@@ -1,6 +1,6 @@
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
 const config = require('./config');
 
 function createConfig(env) {
@@ -14,6 +14,7 @@ function createConfig(env) {
     mode: isProduction ? 'production' : 'development',
     context: path.join(__dirname, config.src.js),
     entry: {
+      // vendor: ['jquery'],
       app: './app.js'
     },
     output: {
@@ -29,7 +30,12 @@ function createConfig(env) {
         'window.jQuery': 'jquery',
         noUiSlider: 'nouislider'
       }),
-      new webpack.NoEmitOnErrorsPlugin()
+      new webpack.NoEmitOnErrorsPlugin(),
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        analyzerPort: 4000,
+        openAnalyzer: false
+      })
     ],
     resolve: {
       extensions: ['.js'],
@@ -65,14 +71,7 @@ function createConfig(env) {
       }
     },
     optimization: {
-      minimizer: [
-        new TerserPlugin({
-          test: /\.js(\?.*)?$/i,
-          cache: true,
-          parallel: true,
-          sourceMap: false
-        })
-      ]
+      minimize: isProduction
     },
     module: {
       rules: [
