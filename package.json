@@ -43,13 +43,12 @@
     "jquery": "^3.4.1",
     "postcss-inline-svg": "^4.1.0",
     "prettier": "^1.19.1",
-    "terser-webpack-plugin": "^2.2.3",
     "webpack": "^4.41.2",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
-    "core-js": "^3.4.8",
+    "core-js": "^3.5.0",
     "regenerator-runtime": "^0.13.3"
   }
 }
