@@ -11,6 +11,7 @@ const config = {
   src: {
     root: 'src',
     templates: 'src/pages',
+    pug: 'src/pug',
     sass: 'src/sass',
     js: 'src/js',
     img: 'src/img',

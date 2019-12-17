@@ -80,6 +80,24 @@ function compilePug() {
 }
 exports.compilePug = compilePug;
 
+function compilePugFast() {
+  const fileList = [`${config.src.templates}/**/*.pug`];
+  return src(fileList, { since: lastRun(compilePugFast) })
+    .pipe(
+      plumber({
+        errorHandler: function(err) {
+          console.log(err.message);
+          this.emit('end');
+        }
+      })
+    )
+    .pipe(debug({ title: 'Compiles ' }))
+    .pipe(pug())
+    .pipe(prettyHtml(prettyOption))
+    .pipe(dest(config.dest.html));
+}
+exports.compilePugFast = compilePugFast;
+
 // Copy Assets
 function copyAssets(cb) {
   Object.keys(config.addAssets).forEach(key => {
@@ -91,17 +109,10 @@ function copyAssets(cb) {
 exports.copyAssets = copyAssets;
 
 // Copy images
-function copyImg(cb) {
-  const copiedImages = [];
-
-  if (copiedImages.length) {
-    (async () => {
-      await cpy(copiedImages, config.desc.img);
-      cb();
-    })();
-  } else {
-    cb();
-  }
+function copyImg() {
+  return src(`${config.src.img}/**/*.{jpg,jpeg,png,gif}`, {
+    since: lastRun(copyImg)
+  }).pipe(dest(config.dest.img));
 }
 exports.copyImg = copyImg;
 
@@ -216,14 +227,22 @@ function serve() {
     notify: false
   });
 
+  // Pages
   watch(
-    `${config.src.templates}/**/*.pug`,
+    [`${config.src.templates}/**/*.pug`],
     { events: ['change', 'add'], delay: 100 },
-    series(compilePug, reload)
+    series(compilePugFast, reload)
+  );
+
+  // Templates
+  watch(
+    [`${config.src.pug}/**/*.pug`],
+    { delay: 100 },
+    series(compilePug, parallel(compileSass, buildJs), reload)
   );
 
   watch(
-    `${config.src.img}/*`,
+    `${config.src.img}/**/*.{jpg,jpeg,png,gif}`,
     { events: ['all'], delay: 100 },
     series(copyImg, reload)
   );
@@ -249,14 +268,14 @@ function serve() {
 
 exports.build = series(
   parallel(clearBuildDir),
-  parallel(compilePug, copyAssets, generateSvgSprite),
+  parallel(compilePugFast, copyAssets, generateSvgSprite),
   parallel(copyImg),
   parallel(compileSass, buildJs)
 );
 
 exports.default = series(
   parallel(clearBuildDir),
-  parallel(compilePug, copyAssets, generateSvgSprite),
+  parallel(compilePugFast, copyAssets, generateSvgSprite),
   parallel(copyImg),
   parallel(compileSass, buildJs),
   serve
