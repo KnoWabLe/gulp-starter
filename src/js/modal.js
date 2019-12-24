@@ -1,6 +1,8 @@
 /* global document window */
 /* eslint-disable */
 
+window.$ = window.jQuery = require('jquery');
+
 // Демо событий модальных окон
 $(document).ready(function() {
   $('#modal-demo-01').on('show.nth.modal', function() {

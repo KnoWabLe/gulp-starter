@@ -187,11 +187,9 @@ function handler(err, stats, cb) {
 
 function buildJs() {
   return src('src/js/app.js')
-    .pipe(
-      webpackStream(webpackConfig(config.env), webpack, function(err, stats) {
-        handler(err, stats);
-      })
-    )
+    .pipe(webpackStream({
+      config: require('./webpack.config.js')
+    }))
     .pipe(dest(config.dest.js));
 }
 exports.buildJs = buildJs;
