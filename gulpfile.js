@@ -18,12 +18,9 @@ const svgstore = require('gulp-svgstore');
 const svgmin = require('gulp-svgmin');
 const prettyHtml = require('gulp-pretty-html');
 
-const webpack = require('webpack');
-
 const gutil = require('gulp-util');
 const notify = require('gulp-notify');
 
-const webpackConfig = require('./webpack.config').createConfig;
 const config = require('./config');
 
 // Настройки бьютификатора
@@ -110,7 +107,7 @@ exports.copyAssets = copyAssets;
 
 // Copy images
 function copyImg() {
-  return src(`${config.src.img}/**/*.{jpg,jpeg,png,gif}`, {
+  return src(`${config.src.img}/**/*.{jpg,jpeg,png,gif,svg}`, {
     since: lastRun(copyImg)
   }).pipe(dest(config.dest.img));
 }
@@ -254,7 +251,7 @@ function serve() {
   watch(
     `${config.src.sass}/**/*.{sass,scss}`,
     { events: ['all'], delay: 100 },
-    series(compileSass, reload)
+    series(compileSass)
   );
 
   watch(
