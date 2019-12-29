@@ -59,9 +59,8 @@ function fileExist(filepath) {
 
 // Pug
 function compilePug() {
-  return src(`${config.src.templates}/**/*.pug`, {
-    since: lastRun(compilePug)
-  })
+  const fileList = [`${config.src.templates}/**/*.pug`];
+  return src(fileList)
     .pipe(
       plumber({
         errorHandler: function(err) {
@@ -184,6 +183,7 @@ function handler(err, stats, cb) {
 
 function buildJs() {
   return src('src/js/app.js')
+    .pipe(plumber())
     .pipe(webpackStream({
       config: require('./webpack.config.js')
     }))
@@ -222,14 +222,18 @@ function serve() {
     notify: false
   });
 
-  // Pages
+  // Pages: changing, adding
   watch(
     [`${config.src.templates}/**/*.pug`],
     { events: ['change', 'add'], delay: 100 },
-    series(compilePugFast, reload)
+    series(
+      compilePugFast,
+      parallel(compileSass, buildJs),
+      reload
+    )
   );
 
-  // Templates
+  // Pug Templates
   watch(
     [`${config.src.pug}/**/*.pug`],
     { delay: 100 },
@@ -237,7 +241,7 @@ function serve() {
   );
 
   watch(
-    `${config.src.img}/**/*.{jpg,jpeg,png,gif}`,
+    `${config.src.img}/**/*.{jpg,jpeg,png,gif,svg,webp}`,
     { events: ['all'], delay: 100 },
     series(copyImg, reload)
   );

@@ -4,9 +4,11 @@ block meta
   title Главная
 
 block content
+  include ../pug/header.pug
+
   svg(width="32", height="32")
     use(xlink:href="img/sprite.svg#temp-icon-right-arrow")
-
+  
   .container
     h1 Заголовок
     p Содержимое.
