@@ -59,6 +59,7 @@ function fileExist(filepath) {
 
 // Pug
 function compilePug() {
+  console.log('compile pug');
   const fileList = [`${config.src.templates}/**/*.pug`];
   return src(fileList)
     .pipe(
@@ -77,6 +78,7 @@ function compilePug() {
 exports.compilePug = compilePug;
 
 function compilePugFast() {
+  console.log('compile pug fast');
   const fileList = [`${config.src.templates}/**/*.pug`];
   return src(fileList, { since: lastRun(compilePugFast) })
     .pipe(
@@ -135,6 +137,12 @@ exports.generateSvgSprite = generateSvgSprite;
 // Compile SASS
 function compileSass() {
   return src(`${config.src.sass}/*.{sass,scss}`, { sourcemaps: true })
+    .pipe(plumber({
+      errorHandler: function (err) {
+        console.log(err.message);
+        this.emit('end');
+      }
+    }))
     .pipe(
       sass({
         outputStyle: config.production ? 'compact' : 'expanded', // nested, expanded, compact, compressed
@@ -143,13 +151,8 @@ function compileSass() {
     )
     .on('error', config.errorHandler)
     .pipe(postcss(postCssPlugins))
-    .pipe(
-      csso({
-        restructure: false
-      })
-    )
     .pipe(dest(config.dest.css, { sourcemaps: '.' }))
-    .pipe(browserSync.stream());
+    .pipe(browserSync.stream({once: true}));
 }
 exports.compileSass = compileSass;
 
@@ -203,23 +206,11 @@ function reload(done) {
 
 function serve() {
   browserSync.init({
-    server: {
-      baseDir: !config.production
-        ? [config.dest.root, config.src.root]
-        : config.dest.root,
-      directory: false,
-      serveStaticOptions: {
-        extensions: ['html']
-      }
-    },
-    files: [
-      `${config.dest.html}/*.html`,
-      `${config.dest.css}/*.css`,
-      `${config.dest.img}/**/`
-    ],
+    server: config.dest.root,
     port: 8080,
+    startPath: 'index.html',
     open: false,
-    notify: false
+    notify: false,
   });
 
   // Pages: changing, adding
