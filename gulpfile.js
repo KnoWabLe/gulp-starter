@@ -37,7 +37,7 @@ const postCssPlugins = [
     cascade: false
   }),
   mqpacker({
-    sort: true
+    sort: sortMediaQueries
   }),
   inlineSVG()
 ];
@@ -59,7 +59,6 @@ function fileExist(filepath) {
 
 // Pug
 function compilePug() {
-  console.log('compile pug');
   const fileList = [`${config.src.templates}/**/*.pug`];
   return src(fileList)
     .pipe(
@@ -78,7 +77,6 @@ function compilePug() {
 exports.compilePug = compilePug;
 
 function compilePugFast() {
-  console.log('compile pug fast');
   const fileList = [`${config.src.templates}/**/*.pug`];
   return src(fileList, { since: lastRun(compilePugFast) })
     .pipe(
@@ -136,9 +134,9 @@ exports.generateSvgSprite = generateSvgSprite;
 
 // Compile SASS
 function compileSass() {
-  return src(`${config.src.sass}/*.{sass,scss}`, { sourcemaps: true })
+  return src(`${config.src.sass}/app.{sass,scss}`, { sourcemaps: true })
     .pipe(plumber({
-      errorHandler: function (err) {
+      errorHandler: function(err) {
         console.log(err.message);
         this.emit('end');
       }
@@ -152,7 +150,7 @@ function compileSass() {
     .on('error', config.errorHandler)
     .pipe(postcss(postCssPlugins))
     .pipe(dest(config.dest.css, { sourcemaps: '.' }))
-    .pipe(browserSync.stream({once: true}));
+    .pipe(browserSync.stream());
 }
 exports.compileSass = compileSass;
 
@@ -270,3 +268,28 @@ exports.default = series(
   parallel(compileSass, buildJs),
   serve
 );
+
+function isMax(mq) {
+  return /max-width/.test(mq);
+}
+
+function isMin(mq) {
+  return /min-width/.test(mq);
+}
+
+function sortMediaQueries(a, b) {
+  A = a.replace(/\D/g, '');
+  B = b.replace(/\D/g, '');
+
+  if (isMax(a) && isMax(b)) {
+    return B - A;
+  } else if (isMin(a) && isMin(b)) {
+    return A - B;
+  } else if (isMax(a) && isMin(b)) {
+    return 1;
+  } else if (isMin(a) && isMax(b)) {
+    return -1;
+  }
+
+  return 1;
+}

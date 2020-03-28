@@ -6,19 +6,26 @@
     "build": "gulp build --production --dest=build",
     "start": "gulp"
   },
-  "browserslist": [
-    "last 2 versions",
-    "not dead",
-    "> 1%"
-  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "devDependencies": {
-    "@babel/core": "^7.7.7",
-    "@babel/preset-env": "^7.7.7",
-    "autoprefixer": "^9.7.3",
-    "babel-eslint": "^10.0.3",
-    "babel-loader": "^8.0.6",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "autoprefixer": "^9.7.5",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
     "browser-sync": "^2.26.7",
-    "cpy": "^8.0.0",
+    "cpy": "^8.1.0",
     "css-mqpacker": "^7.0.0",
     "del": "^5.1.0",
     "eslint": "^6.8.0",
@@ -39,13 +46,12 @@
     "gulp-util": "^3.0.8",
     "jquery": "^3.4.1",
     "postcss-inline-svg": "^4.1.0",
-    "prettier": "^1.19.1",
-    "webpack": "^5.0.0-beta.11",
-    "webpack-bundle-analyzer": "^3.6.0",
+    "prettier": "^2.0.2",
+    "webpack": "^5.0.0-beta.14",
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
-    "core-js": "^3.6.1",
-    "regenerator-runtime": "^0.13.3"
+    "core-js": "^3.6.4",
+    "regenerator-runtime": "^0.13.5"
   }
 }
