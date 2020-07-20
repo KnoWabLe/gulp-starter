@@ -19,17 +19,17 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
-    "autoprefixer": "^9.7.5",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "autoprefixer": "^9.8.5",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "browser-sync": "^2.26.7",
+    "browser-sync": "^2.26.10",
     "cpy": "^8.1.0",
     "css-mqpacker": "^7.0.0",
     "del": "^5.1.0",
-    "eslint": "^6.8.0",
-    "eslint-loader": "^3.0.3",
+    "eslint": "^7.5.0",
+    "eslint-loader": "^4.0.2",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
     "gulp-debug": "^4.0.0",
@@ -39,19 +39,19 @@
     "gulp-pretty-html": "^2.0.10",
     "gulp-pug": "^4.0.1",
     "gulp-rename": "^2.0.0",
-    "gulp-sass": "^4.0.2",
+    "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-svgmin": "^2.2.0",
+    "gulp-svgmin": "^3.0.0",
     "gulp-svgstore": "^7.0.1",
     "gulp-util": "^3.0.8",
-    "jquery": "^3.5.0",
+    "jquery": "^3.5.1",
     "postcss-inline-svg": "^4.1.0",
-    "prettier": "^2.0.2",
+    "prettier": "^2.0.5",
     "webpack": "^5.0.0-beta.14",
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
-    "core-js": "^3.6.4",
+    "core-js": "^3.6.5",
     "regenerator-runtime": "^0.13.5"
   }
 }
