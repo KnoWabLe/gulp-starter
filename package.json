@@ -19,16 +19,16 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/preset-env": "^7.10.4",
-    "autoprefixer": "^9.8.5",
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "autoprefixer": "^9.8.6",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "browser-sync": "^2.26.10",
+    "browser-sync": "^2.26.12",
     "cpy": "^8.1.0",
     "css-mqpacker": "^7.0.0",
     "del": "^5.1.0",
-    "eslint": "^7.5.0",
+    "eslint": "^7.6.0",
     "eslint-loader": "^4.0.2",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
@@ -46,12 +46,11 @@
     "gulp-util": "^3.0.8",
     "jquery": "^3.5.1",
     "postcss-inline-svg": "^4.1.0",
-    "prettier": "^2.0.5",
-    "webpack": "^5.0.0-beta.14",
+    "prettier": "^1.19.1",
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "regenerator-runtime": "^0.13.5"
+    "regenerator-runtime": "^0.13.7"
   }
 }
