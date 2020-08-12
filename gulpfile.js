@@ -149,6 +149,11 @@ function compileSass() {
     )
     .on('error', config.errorHandler)
     .pipe(postcss(postCssPlugins))
+    .pipe(
+      csso({
+        restructure: false,
+      })
+    )
     .pipe(dest(config.dest.css, { sourcemaps: '.' }))
     .pipe(browserSync.stream());
 }
