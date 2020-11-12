@@ -16,6 +16,7 @@ const webpackStream = require('webpack-stream');
 const svgstore = require('gulp-svgstore');
 const svgmin = require('gulp-svgmin');
 const prettyHtml = require('gulp-pretty-html');
+const cleanCSS = require('gulp-clean-css');
 
 const gutil = require('gulp-util');
 const notify = require('gulp-notify');
@@ -148,6 +149,7 @@ function compileSass() {
     )
     .on('error', config.errorHandler)
     .pipe(postcss(postCssPlugins))
+    .pipe(cleanCSS())
     .pipe(dest(config.dest.css, { sourcemaps: '.' }))
     .pipe(browserSync.stream());
 }
