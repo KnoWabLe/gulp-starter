@@ -49,6 +49,7 @@
     "postcss": "^8.1.7",
     "postcss-inline-svg": "^5.0.0",
     "prettier": "1.19.1",
+    "webpack": "^5.4.0",
     "webpack-stream": "^6.1.0"
   },
   "dependencies": {

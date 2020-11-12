@@ -17,6 +17,7 @@ const svgstore = require('gulp-svgstore');
 const svgmin = require('gulp-svgmin');
 const prettyHtml = require('gulp-pretty-html');
 const cleanCSS = require('gulp-clean-css');
+const webpack = require('webpack');
 
 const gutil = require('gulp-util');
 const notify = require('gulp-notify');
@@ -188,7 +189,7 @@ function buildJs() {
     .pipe(plumber())
     .pipe(webpackStream({
       config: require('./webpack.config.js')
-    }))
+    }, webpack))
     .pipe(dest(config.dest.js));
 }
 exports.buildJs = buildJs;
