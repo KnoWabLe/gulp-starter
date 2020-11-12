@@ -11,7 +11,6 @@ const autoprefixer = require('autoprefixer');
 const mqpacker = require('css-mqpacker');
 const inlineSVG = require('postcss-inline-svg');
 const cpy = require('cpy');
-const csso = require('gulp-csso');
 const debug = require('gulp-debug');
 const webpackStream = require('webpack-stream');
 const svgstore = require('gulp-svgstore');
