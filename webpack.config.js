@@ -15,7 +15,7 @@ module.exports = {
     path: path.join(__dirname, config.dest.js),
     filename: '[name].js'
   },
-  devtool: isProduction ? false : 'eval-cheap-source-map',
+  devtool: isProduction ? false : 'eval-cheap-module-source-map',
   module: {
     rules: [
       {
