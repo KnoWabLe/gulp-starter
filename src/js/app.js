@@ -1,2 +1,1 @@
 import './modal';
-import './test';
