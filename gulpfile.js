@@ -7,8 +7,8 @@ const rename = require('gulp-rename');
 const browserSync = require('browser-sync').create();
 const sass = require('gulp-sass');
 const postcss = require('gulp-postcss');
+const sortMediaQueries = require('postcss-sort-media-queries');
 const autoprefixer = require('autoprefixer');
-const mqpacker = require('css-mqpacker');
 const inlineSVG = require('postcss-inline-svg');
 const cpy = require('cpy');
 const debug = require('gulp-debug');
@@ -19,10 +19,8 @@ const prettyHtml = require('gulp-pretty-html');
 const csso = require('gulp-csso');
 const webpack = require('webpack');
 
-const gutil = require('gulp-util');
-const notify = require('gulp-notify');
-
 const config = require('./config');
+const mode = process.env.NODE_ENV || 'development';
 
 // Настройки бьютификатора
 const prettyOption = {
@@ -34,11 +32,10 @@ const prettyOption = {
 
 // Список и настройки плагинов postCSS
 const postCssPlugins = [
-  autoprefixer({
-    cascade: false,
-  }),
-  mqpacker({
-    sort: sortMediaQueries,
+  autoprefixer(),
+  sortMediaQueries({
+    sort: 'mobile-first',
+    // sort: 'desktop-first',
   }),
   inlineSVG(),
 ];
@@ -144,51 +141,22 @@ function compileSass() {
         },
       })
     )
-    .pipe(
-      sass({
-        outputStyle: config.production ? 'compact' : 'expanded', // nested, expanded, compact, compressed
-        precision: 5,
-      })
-    )
-    .on('error', config.errorHandler)
+    .pipe(debug({ title: 'Compiles:' }))
+    .pipe(sass())
     .pipe(postcss(postCssPlugins))
     .pipe(
       csso({
         restructure: false,
       })
     )
-    .pipe(dest(config.dest.css, { sourcemaps: '.' }))
+    .pipe(
+      dest(config.dest.css, {
+        sourcemaps: mode === 'development' ? '.' : false,
+      })
+    )
     .pipe(browserSync.stream());
 }
 exports.compileSass = compileSass;
-
-// Webpack log handler
-function handler(err, stats, cb) {
-  const { errors } = stats.compilation;
-
-  if (err) throw new gutil.PluginError('webpack', err);
-
-  if (errors.length > 0) {
-    notify
-      .onError({
-        title: 'Webpack Error',
-        message: '<%= error.message %>',
-        sound: 'Submarine',
-      })
-      .call(null, errors[0]);
-  }
-
-  gutil.log(
-    '[webpack]',
-    stats.toString({
-      colors: true,
-      chunks: false,
-    })
-  );
-
-  browserSync.reload();
-  if (typeof cb === 'function') cb();
-}
 
 function buildJs() {
   return src('src/js/app.js')
@@ -277,28 +245,3 @@ exports.default = series(
   parallel(compileSass, buildJs),
   serve
 );
-
-function isMax(mq) {
-  return /max-width/.test(mq);
-}
-
-function isMin(mq) {
-  return /min-width/.test(mq);
-}
-
-function sortMediaQueries(a, b) {
-  A = a.replace(/\D/g, '');
-  B = b.replace(/\D/g, '');
-
-  if (isMax(a) && isMax(b)) {
-    return B - A;
-  } else if (isMin(a) && isMin(b)) {
-    return A - B;
-  } else if (isMax(a) && isMin(b)) {
-    return 1;
-  } else if (isMin(a) && isMax(b)) {
-    return -1;
-  }
-
-  return 1;
-}

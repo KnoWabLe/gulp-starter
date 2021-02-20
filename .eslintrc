@@ -1,9 +1,8 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "env": {
     "browser": true,
     "node": true,
-    "jquery": true,
     "es6": true
   },
   "rules": {
