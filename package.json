@@ -44,7 +44,7 @@
     "postcss": "^8.2.6",
     "postcss-inline-svg": "^5.0.0",
     "postcss-sort-media-queries": "^3.4.3",
-    "prettier": "1.19.1",
+    "prettier": "2.2.1",
     "webpack": "^5.23.0",
     "webpack-stream": "^6.1.2"
   },
