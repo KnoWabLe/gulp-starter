@@ -16,7 +16,7 @@ const webpackStream = require('webpack-stream');
 const svgstore = require('gulp-svgstore');
 const svgmin = require('gulp-svgmin');
 const prettyHtml = require('gulp-pretty-html');
-const cleanCSS = require('gulp-clean-css');
+const csso = require('gulp-csso');
 const webpack = require('webpack');
 
 const gutil = require('gulp-util');
@@ -29,18 +29,18 @@ const prettyOption = {
   indent_size: 2,
   indent_char: ' ',
   unformatted: ['code', 'em', 'strong', 'span', 'i', 'b', 'br', 'script'],
-  content_unformatted: []
+  content_unformatted: [],
 };
 
 // Список и настройки плагинов postCSS
 const postCssPlugins = [
   autoprefixer({
-    cascade: false
+    cascade: false,
   }),
   mqpacker({
-    sort: sortMediaQueries
+    sort: sortMediaQueries,
   }),
-  inlineSVG()
+  inlineSVG(),
 ];
 
 /**
@@ -67,7 +67,7 @@ function compilePug() {
         errorHandler: function(err) {
           console.log(err.message);
           this.emit('end');
-        }
+        },
       })
     )
     .pipe(debug({ title: 'Compiles ' }))
@@ -85,7 +85,7 @@ function compilePugFast() {
         errorHandler: function(err) {
           console.log(err.message);
           this.emit('end');
-        }
+        },
       })
     )
     .pipe(debug({ title: 'Compiles ' }))
@@ -108,7 +108,7 @@ exports.copyAssets = copyAssets;
 // Copy images
 function copyImg() {
   return src(`${config.src.img}/**/*.{jpg,jpeg,png,gif,svg}`, {
-    since: lastRun(copyImg)
+    since: lastRun(copyImg),
   }).pipe(dest(config.dest.img));
 }
 exports.copyImg = copyImg;
@@ -136,21 +136,27 @@ exports.generateSvgSprite = generateSvgSprite;
 // Compile SASS
 function compileSass() {
   return src(`${config.src.sass}/app.{sass,scss}`, { sourcemaps: true })
-    .pipe(plumber({
-      errorHandler: function(err) {
-        console.log(err.message);
-        this.emit('end');
-      }
-    }))
+    .pipe(
+      plumber({
+        errorHandler: function(err) {
+          console.log(err.message);
+          this.emit('end');
+        },
+      })
+    )
     .pipe(
       sass({
         outputStyle: config.production ? 'compact' : 'expanded', // nested, expanded, compact, compressed
-        precision: 5
+        precision: 5,
       })
     )
     .on('error', config.errorHandler)
     .pipe(postcss(postCssPlugins))
-    .pipe(cleanCSS())
+    .pipe(
+      csso({
+        restructure: false,
+      })
+    )
     .pipe(dest(config.dest.css, { sourcemaps: '.' }))
     .pipe(browserSync.stream());
 }
@@ -167,7 +173,7 @@ function handler(err, stats, cb) {
       .onError({
         title: 'Webpack Error',
         message: '<%= error.message %>',
-        sound: 'Submarine'
+        sound: 'Submarine',
       })
       .call(null, errors[0]);
   }
@@ -176,7 +182,7 @@ function handler(err, stats, cb) {
     '[webpack]',
     stats.toString({
       colors: true,
-      chunks: false
+      chunks: false,
     })
   );
 
@@ -187,9 +193,14 @@ function handler(err, stats, cb) {
 function buildJs() {
   return src('src/js/app.js')
     .pipe(plumber())
-    .pipe(webpackStream({
-      config: require('./webpack.config.js')
-    }, webpack))
+    .pipe(
+      webpackStream(
+        {
+          config: require('./webpack.config.js'),
+        },
+        webpack
+      )
+    )
     .pipe(dest(config.dest.js));
 }
 exports.buildJs = buildJs;
@@ -217,11 +228,7 @@ function serve() {
   watch(
     [`${config.src.templates}/**/*.pug`],
     { events: ['change', 'add'], delay: 100 },
-    series(
-      compilePugFast,
-      parallel(compileSass, buildJs),
-      reload
-    )
+    series(compilePugFast, parallel(compileSass, buildJs), reload)
   );
 
   // Pug Templates
