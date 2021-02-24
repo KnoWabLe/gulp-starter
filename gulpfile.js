@@ -17,6 +17,7 @@ const svgstore = require('gulp-svgstore');
 const svgmin = require('gulp-svgmin');
 const prettyHtml = require('gulp-pretty-html');
 const csso = require('gulp-csso');
+const newer = require('gulp-newer');
 const webpack = require('webpack');
 
 const config = require('./config');
@@ -61,7 +62,7 @@ function compilePug() {
   return src(fileList)
     .pipe(
       plumber({
-        errorHandler: function(err) {
+        errorHandler: function (err) {
           console.log(err.message);
           this.emit('end');
         },
@@ -79,7 +80,7 @@ function compilePugFast() {
   return src(fileList, { since: lastRun(compilePugFast) })
     .pipe(
       plumber({
-        errorHandler: function(err) {
+        errorHandler: function (err) {
           console.log(err.message);
           this.emit('end');
         },
@@ -94,7 +95,7 @@ exports.compilePugFast = compilePugFast;
 
 // Copy Assets
 function copyAssets(cb) {
-  Object.keys(config.addAssets).forEach(key => {
+  Object.keys(config.addAssets).forEach((key) => {
     cpy(key, `${config.dest.root}${config.addAssets[key]}`);
   });
 
@@ -104,9 +105,9 @@ exports.copyAssets = copyAssets;
 
 // Copy images
 function copyImg() {
-  return src(`${config.src.img}/**/*.{jpg,jpeg,png,gif,svg}`, {
-    since: lastRun(copyImg),
-  }).pipe(dest(config.dest.img));
+  return src(`${config.src.img}/**/*.{jpg,jpeg,png,gif,svg}`)
+    .pipe(newer(config.dest.img))
+    .pipe(dest(config.dest.img));
 }
 exports.copyImg = copyImg;
 
@@ -117,7 +118,7 @@ function generateSvgSprite(cb) {
   if (fileExist(spriteSvgPath)) {
     return src(`${config.src.icons}/*.svg`)
       .pipe(
-        svgmin(function() {
+        svgmin(function () {
           return { plugins: [{ cleanupIDs: { minify: true } }] };
         })
       )
@@ -135,7 +136,7 @@ function compileSass() {
   return src(`${config.src.sass}/app.{sass,scss}`, { sourcemaps: true })
     .pipe(
       plumber({
-        errorHandler: function(err) {
+        errorHandler: function (err) {
           console.log(err.message);
           this.emit('end');
         },

@@ -19,9 +19,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.12.17",
-    "@babel/eslint-parser": "^7.12.17",
-    "@babel/preset-env": "^7.12.17",
+    "@babel/core": "^7.13.1",
+    "@babel/eslint-parser": "^7.13.4",
+    "@babel/preset-env": "^7.13.5",
     "autoprefixer": "^10.2.4",
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.26.14",
@@ -33,6 +33,7 @@
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
     "gulp-debug": "^4.0.0",
+    "gulp-newer": "^1.4.0",
     "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^9.0.0",
     "gulp-pretty-html": "^2.0.10",
@@ -45,7 +46,7 @@
     "postcss-inline-svg": "^5.0.0",
     "postcss-sort-media-queries": "^3.4.3",
     "prettier": "2.2.1",
-    "webpack": "^5.23.0",
+    "webpack": "^5.24.1",
     "webpack-stream": "^6.1.2"
   },
   "dependencies": {
