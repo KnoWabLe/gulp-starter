@@ -10,6 +10,9 @@ block content
     h1 Заголовок
     p Содержимое.
 
+    p
+      button.btn(type='button', data-modal-target='#modal-demo-01', data-modal='open') Показать модальное окно
+
     img(src="img/bg.jpg", alt="")
 
     svg(width="32", height="32")
@@ -21,15 +24,25 @@ block content
         ul
           li Lorem ipsum dolor sit amet.
           li Lorem ipsum dolor sit amet.
+            ul
+              li Lorem ipsum dolor sit amet.
+              li Lorem ipsum dolor sit amet.
+              li Lorem ipsum dolor sit amet.
+          li Lorem ipsum dolor sit amet.
           li Lorem ipsum dolor sit amet.
       .col-lg-4
         p col-lg-4
+        ol
+          li Lorem ipsum dolor sit amet.
+          li Lorem ipsum dolor sit amet.
+            ol
+              li Lorem ipsum dolor sit amet.
+              li Lorem ipsum dolor sit amet.
+              li Lorem ipsum dolor sit amet.
+          li Lorem ipsum dolor sit amet.
+          li Lorem ipsum dolor sit amet.
       .col-lg-4
         p col-lg-4
-
-    .row
-      .col
-        button.btn(type='button', data-modal-target='#modal-demo-01', data-modal='open') Показать модальное окно
 
   section.modal(id="modal-demo-01", tabindex='-1', aria-hidden='true')
     .modal__dialog

@@ -1,0 +1,20 @@
+.btn {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 6px 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  user-select: none;
+  text-align: center;
+  font-size: 1em;
+  font-family: inherit;
+  text-decoration: none;
+  text-transform: none;
+  color: #000;
+  background-color: #ccc;
+  cursor: pointer;
+  overflow: hidden;
+}

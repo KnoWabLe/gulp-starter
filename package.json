@@ -4,7 +4,11 @@
   "authors": "Dmitry Shakun",
   "scripts": {
     "start": "gulp",
-    "build": "cross-env NODE_ENV=production DEST=build gulp build"
+    "build": "cross-env NODE_ENV=production DEST=build gulp build",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": "eslint"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
@@ -30,6 +34,7 @@
     "gulp-sass": "^4.1.0",
     "gulp-svgmin": "^3.0.0",
     "gulp-svgstore": "^7.0.1",
+    "lint-staged": "^10.5.4",
     "postcss": "^8.2.8",
     "postcss-inline-svg": "^5.0.0",
     "postcss-sort-media-queries": "^3.6.5",
