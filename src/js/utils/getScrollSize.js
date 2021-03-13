@@ -1,6 +1,4 @@
-/* global document */
-
-const getScrollSize = function() {
+const getScrollSize = function () {
   const outer = document.createElement('div');
   const inner = document.createElement('div');
   outer.style.overflow = 'scroll';

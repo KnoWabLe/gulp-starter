@@ -1,9 +1,7 @@
-/* global document window */
-
 import ready from './utils/documentReady.js';
 import getScrollSize from './utils/getScrollSize.js';
 
-ready(function() {
+ready(function () {
   const bodyPaddingRightOriginal = parseInt(
     window
       .getComputedStyle(document.body, null)
@@ -11,7 +9,7 @@ ready(function() {
   );
   const backdrop = document.createElement('div');
 
-  document.addEventListener('click', function(event) {
+  document.addEventListener('click', function (event) {
     const target = event.target.closest('a[data-modal], button[data-modal]');
 
     if (target && target.dataset.modal === 'open') {
@@ -53,7 +51,7 @@ ready(function() {
       document.body.classList.remove('modal-open');
       document.body.style.paddingRight = '';
 
-      document.querySelectorAll('.modal').forEach(function(modal) {
+      document.querySelectorAll('.modal').forEach(function (modal) {
         modal.classList.remove('modal--show');
         modal.style.display = 'none';
         modal.ariaModal = null;
