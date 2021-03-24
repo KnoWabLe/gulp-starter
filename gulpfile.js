@@ -23,6 +23,13 @@ const webpack = require('webpack');
 const config = require('./config');
 const mode = process.env.NODE_ENV || 'development';
 
+const nth = {};
+nth.scssImportsList = [];
+
+// Сообщение для компилируемых файлов
+let doNotEditMsg =
+  '\n ВНИМАНИЕ! Этот файл генерируется автоматически.\n Любые изменения этого файла будут потеряны при следующей компиляции.\n Любое изменение проекта без возможности компиляции ДОЛЬШЕ И ДОРОЖЕ в 2-5 раз.\n\n';
+
 // Настройки бьютификатора
 const prettyOption = {
   indent_size: 2,
@@ -41,20 +48,19 @@ const postCssPlugins = [
   inlineSVG(),
 ];
 
-/**
- * Проверка существования файла или папки
- * @param  {string} path      Путь до файла или папки
- * @return {boolean}
- */
-function fileExist(filepath) {
-  let flag = true;
-  try {
-    fs.accessSync(filepath, fs.F_OK);
-  } catch (e) {
-    flag = false;
-  }
-  return flag;
+function writePugMixinsFile(cb) {
+  let allBlocksWithPugFiles = getDirectories('pug');
+  let pugMixins = '//-' + doNotEditMsg.replace(/\n /gm, '\n  ');
+  allBlocksWithPugFiles.forEach(function (blockName) {
+    pugMixins += `include ${config.src.blocks.replace(
+      config.src.root + '/',
+      '../'
+    )}/${blockName}/${blockName}.pug\n`;
+  });
+  fs.writeFileSync(`${config.src.pug}/mixins.pug`, pugMixins);
+  cb();
 }
+exports.writePugMixinsFile = writePugMixinsFile;
 
 // Pug
 function compilePug() {
@@ -95,7 +101,7 @@ exports.compilePugFast = compilePugFast;
 
 // Copy Assets
 function copyAssets(cb) {
-  Object.keys(config.addAssets).forEach((key) => {
+  Object.keys(config.addAssets).forEach(key => {
     cpy(key, `${config.dest.root}${config.addAssets[key]}`);
   });
 
@@ -131,9 +137,44 @@ function generateSvgSprite(cb) {
 }
 exports.generateSvgSprite = generateSvgSprite;
 
+function writeSassImportsFile(cb) {
+  const newScssImportsList = [];
+
+  config.addStyleBefore.forEach(function (src) {
+    newScssImportsList.push(src);
+  });
+
+  let allBlocksWithScssFiles = getDirectories('scss');
+
+  allBlocksWithScssFiles.forEach(function (blockWithScssFile) {
+    let url = `${config.src.blocks}/${blockWithScssFile}/${blockWithScssFile}.scss`;
+    if (newScssImportsList.indexOf(url) > -1) return;
+    newScssImportsList.push(url);
+  });
+
+  let diff = getArraysDiff(newScssImportsList, nth.scssImportsList);
+  if (diff.length) {
+    let msg = `\n/*!*${doNotEditMsg
+      .replace(/\n /gm, '\n * ')
+      .replace(/\n\n$/, '\n */\n\n')}`;
+    let styleImports = msg;
+    newScssImportsList.forEach(function (src) {
+      styleImports += `@import "${src}";\n`;
+    });
+    styleImports += msg;
+    fs.writeFileSync(`${config.src.sass}/style.scss`, styleImports);
+    console.log('---------- Write new style.scss');
+    nth.scssImportsList = newScssImportsList;
+  }
+  cb();
+}
+exports.writeSassImportsFile = writeSassImportsFile;
+
 // Compile SASS
 function compileSass() {
-  return src(`${config.src.sass}/app.{sass,scss}`, { sourcemaps: true })
+  const fileList = [`${config.src.sass}/style.scss`];
+
+  return src(fileList, { sourcemaps: true })
     .pipe(
       plumber({
         errorHandler: function (err) {
@@ -143,7 +184,7 @@ function compileSass() {
       })
     )
     .pipe(debug({ title: 'Compiles:' }))
-    .pipe(sass())
+    .pipe(sass({ includePaths: [__dirname + '/', 'node_modules'] }))
     .pipe(postcss(postCssPlugins))
     .pipe(
       csso({
@@ -197,14 +238,66 @@ function serve() {
   watch(
     [`${config.src.templates}/**/*.pug`],
     { events: ['change', 'add'], delay: 100 },
-    series(compilePugFast, parallel(compileSass, buildJs), reload)
+    series(
+      compilePugFast,
+      parallel(writeSassImportsFile),
+      parallel(compileSass, buildJs),
+      reload
+    )
   );
 
   // Pug Templates
   watch(
     [`${config.src.pug}/**/*.pug`],
     { delay: 100 },
-    series(compilePug, parallel(compileSass, buildJs), reload)
+    series(
+      compilePug,
+      parallel(writeSassImportsFile),
+      parallel(compileSass, buildJs),
+      reload
+    )
+  );
+
+  // Разметка Блоков: изменение
+  watch(
+    [`${config.src.blocks}/**/*.pug`],
+    { events: ['change'], delay: 100 },
+    series(compilePug, reload)
+  );
+
+  // Разметка Блоков: добавление
+  watch(
+    [`${config.src.blocks}/**/*.pug`],
+    { events: ['add'], delay: 100 },
+    series(writePugMixinsFile, compilePug, reload)
+  );
+
+  // Разметка Блоков: удаление
+  watch(
+    [`${config.src.blocks}/**/*.pug`],
+    { events: ['unlink'], delay: 100 },
+    writePugMixinsFile
+  );
+
+  // Стили Блоков: изменение
+  watch(
+    [`${config.src.blocks}/**/*.scss`],
+    { events: ['change'], delay: 100 },
+    series(compileSass)
+  );
+
+  // Стили Блоков: добавление
+  watch(
+    [`${config.src.blocks}/**/*.scss`],
+    { events: ['add'], delay: 100 },
+    series(writeSassImportsFile, compileSass)
+  );
+
+  // Стилевые глобальные файлы: все события
+  watch(
+    [`${config.src.sass}/**/*.scss`, `!${config.src.sass}/style.scss`],
+    { events: ['all'], delay: 100 },
+    series(compileSass)
   );
 
   watch(
@@ -233,16 +326,57 @@ function serve() {
 }
 
 exports.build = series(
-  parallel(clearBuildDir),
+  parallel(clearBuildDir, writePugMixinsFile),
   parallel(compilePugFast, copyAssets, generateSvgSprite),
-  parallel(copyImg),
+  parallel(copyImg, writeSassImportsFile),
   parallel(compileSass, buildJs)
 );
 
 exports.default = series(
-  parallel(clearBuildDir),
+  parallel(clearBuildDir, writePugMixinsFile),
   parallel(compilePugFast, copyAssets, generateSvgSprite),
-  parallel(copyImg),
+  parallel(copyImg, writeSassImportsFile),
   parallel(compileSass, buildJs),
   serve
 );
+
+/**
+ * Проверка существования файла или папки
+ * @param  {string} path      Путь до файла или папки
+ * @return {boolean}
+ */
+function fileExist(filepath) {
+  let flag = true;
+  try {
+    fs.accessSync(filepath, fs.F_OK);
+  } catch (e) {
+    flag = false;
+  }
+  return flag;
+}
+
+/**
+ * Получение всех названий поддиректорий, содержащих файл указанного расширения, совпадающий по имени с поддиректорией
+ * @param  {string} ext    Расширение файлов, которое проверяется
+ * @return {array}         Массив из имён блоков
+ */
+function getDirectories(ext) {
+  let source = `${config.src.blocks}/`;
+  let res = fs
+    .readdirSync(source)
+    .filter(item => fs.lstatSync(source + item).isDirectory())
+    .filter(item => fileExist(source + item + '/' + item + '.' + ext));
+  return res;
+}
+
+/**
+ * Получение разницы между двумя массивами.
+ * @param  {array} a1 Первый массив
+ * @param  {array} a2 Второй массив
+ * @return {array}    Элементы, которые отличаются
+ */
+function getArraysDiff(a1, a2) {
+  return a1
+    .filter(i => !a2.includes(i))
+    .concat(a2.filter(i => !a1.includes(i)));
+}

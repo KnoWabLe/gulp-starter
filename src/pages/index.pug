@@ -44,11 +44,6 @@ block content
       .col-lg-4
         p col-lg-4
 
-  section.modal(id="modal-demo-01", tabindex='-1', aria-hidden='true')
-    .modal__dialog
-      .modal__content
-        button(class="close  close--sm modal__close" type="button" aria-label="Закрыть" title="Закрыть" data-modal="close")
-          span Закрыть
-        .modal__body
-          h3.modal__title Title
-          p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minima id voluptatibus unde placeat, repellat cumque voluptatem exercitationem nemo libero esse.
+  +modal('modal-demo-01', 'Заголовок', 'some')
+    .modal__body
+      p Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minima id voluptatibus unde placeat, repellat cumque voluptatem exercitationem nemo libero esse.

@@ -13,7 +13,7 @@
   "devDependencies": {
     "@babel/core": "^7.13.10",
     "@babel/eslint-parser": "^7.13.10",
-    "@babel/preset-env": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
     "autoprefixer": "^10.2.5",
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.26.14",
@@ -39,7 +39,7 @@
     "postcss-inline-svg": "^5.0.0",
     "postcss-sort-media-queries": "^3.6.5",
     "prettier": "2.2.1",
-    "webpack": "^5.25.0",
+    "webpack": "^5.28.0",
     "webpack-stream": "^6.1.2"
   },
   "dependencies": {

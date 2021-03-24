@@ -1,6 +1,5 @@
 .modal {
-
-  $block-name:                &; // #{$block-name}__element
+  $block-name: &; // #{$block-name}__element
 
   position: fixed;
   top: 0;
@@ -18,7 +17,9 @@
     align-items: center;
     width: auto;
     max-width: 480px;
-    min-height: calc(100% - 4em); // центровка, удвоенный margin, указанный чуть ниже
+    min-height: calc(
+      100% - 4em
+    ); // центровка, удвоенный margin, указанный чуть ниже
     margin: 2em auto;
     pointer-events: none;
   }
@@ -39,6 +40,10 @@
     flex-shrink: 0;
     padding: 16px 40px 16px 16px;
     border-bottom: 1px solid #ccc;
+  }
+
+  &__title {
+    margin: 0;
   }
 
   &__close {
@@ -69,14 +74,11 @@
   }
 
   &--show {
-
     #{$block-name}__dialog {
       animation: modal-dialog 0.3s 1 ease-out forwards;
     }
   }
 }
-
-
 
 .modal-open {
   overflow: hidden;
@@ -86,8 +88,6 @@
     overflow-y: auto;
   }
 }
-
-
 
 .modal-backdrop {
   position: fixed;
@@ -100,10 +100,7 @@
   animation: modal-backdrop 0.3s 1 ease-out forwards;
 }
 
-
-
 @keyframes modal-backdrop {
-
   from {
     opacity: 0;
   }
@@ -114,7 +111,6 @@
 }
 
 @keyframes modal-dialog {
-
   from {
     transform: translate(0, -2em);
   }

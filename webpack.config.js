@@ -15,7 +15,13 @@ module.exports = {
     path: path.join(__dirname, config.dest.js),
     filename: '[name].js',
   },
-  devtool: mode === 'production' ? false : 'eval-cheap-module-source-map',
+  resolve: {
+    alias: {
+      Utils: path.resolve(__dirname, 'src/js/utils/'),
+    },
+  },
+  // devtool: mode === 'production' ? false : 'eval-cheap-module-source-map',
+  devtool: mode === 'production' ? false : 'inline-source-map',
   module: {
     rules: [
       {
