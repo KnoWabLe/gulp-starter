@@ -14,6 +14,7 @@ const cpy = require('cpy');
 const debug = require('gulp-debug');
 const webpackStream = require('webpack-stream');
 const svgstore = require('gulp-svgstore');
+const cheerio = require('gulp-cheerio');
 const svgmin = require('gulp-svgmin');
 const prettyHtml = require('gulp-pretty-html');
 const csso = require('gulp-csso');
@@ -126,6 +127,14 @@ function generateSvgSprite(cb) {
       .pipe(
         svgmin(function () {
           return { plugins: [{ cleanupIDs: { minify: true } }] };
+        })
+      )
+      .pipe(
+        cheerio({
+          run: function ($) {
+            $('[fill]').removeAttr('fill');
+          },
+          parserOptions: { xmlMode: true },
         })
       )
       .pipe(svgstore({ inlineSvg: true }))

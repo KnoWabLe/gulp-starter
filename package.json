@@ -23,6 +23,7 @@
     "eslint": "^7.27.0",
     "eslint-webpack-plugin": "^2.5.4",
     "gulp": "^4.0.2",
+    "gulp-cheerio": "^1.0.0",
     "gulp-csso": "^4.0.1",
     "gulp-debug": "^4.0.0",
     "gulp-newer": "^1.4.0",
