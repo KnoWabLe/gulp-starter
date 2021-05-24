@@ -20,8 +20,7 @@ module.exports = {
       Utils: path.resolve(__dirname, 'src/js/utils/'),
     },
   },
-  // devtool: mode === 'production' ? false : 'eval-cheap-module-source-map',
-  devtool: mode === 'production' ? false : 'inline-source-map',
+  devtool: mode === 'production' ? false : 'eval',
   module: {
     rules: [
       {
