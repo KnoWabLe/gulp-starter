@@ -11,17 +11,17 @@
     "*.js": "eslint"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.10",
-    "@babel/eslint-parser": "^7.13.10",
-    "@babel/preset-env": "^7.13.12",
+    "@babel/core": "^7.14.3",
+    "@babel/eslint-parser": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
     "autoprefixer": "^10.2.5",
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.26.14",
     "cpy": "^8.1.2",
     "cross-env": "^7.0.3",
     "del": "^6.0.0",
-    "eslint": "^7.22.0",
-    "eslint-webpack-plugin": "^2.5.2",
+    "eslint": "^7.27.0",
+    "eslint-webpack-plugin": "^2.5.4",
     "gulp": "^4.0.2",
     "gulp-csso": "^4.0.1",
     "gulp-debug": "^4.0.0",
@@ -34,16 +34,16 @@
     "gulp-sass": "^4.1.0",
     "gulp-svgmin": "^3.0.0",
     "gulp-svgstore": "^7.0.1",
-    "lint-staged": "^10.5.4",
-    "postcss": "^8.2.8",
+    "lint-staged": "^11.0.0",
+    "postcss": "^8.3.0",
     "postcss-inline-svg": "^5.0.0",
-    "postcss-sort-media-queries": "^3.6.5",
-    "prettier": "2.2.1",
-    "webpack": "^5.28.0",
+    "postcss-sort-media-queries": "^3.10.11",
+    "prettier": "2.3.0",
+    "webpack": "^5.37.1",
     "webpack-stream": "^6.1.2"
   },
   "dependencies": {
-    "core-js": "^3.9.1",
+    "core-js": "^3.12.1",
     "regenerator-runtime": "^0.13.7"
   }
 }
