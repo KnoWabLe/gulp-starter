@@ -5,7 +5,7 @@ const del = require('del');
 const pug = require('gulp-pug');
 const rename = require('gulp-rename');
 const browserSync = require('browser-sync').create();
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const postcss = require('gulp-postcss');
 const sortMediaQueries = require('postcss-sort-media-queries');
 const autoprefixer = require('autoprefixer');
@@ -126,7 +126,16 @@ function generateSvgSprite(cb) {
     return src(`${config.src.icons}/*.svg`)
       .pipe(
         svgmin(function () {
-          return { plugins: [{ cleanupIDs: { minify: true } }] };
+          return {
+            plugins: [
+              {
+                name: 'cleanupIDs',
+                params: {
+                  minify: true,
+                },
+              },
+            ],
+          };
         })
       )
       .pipe(
