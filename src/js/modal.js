@@ -3,9 +3,7 @@ import getScrollSize from './utils/getScrollSize.js';
 
 ready(function () {
   const bodyPaddingRightOriginal = parseInt(
-    window
-      .getComputedStyle(document.body, null)
-      .getPropertyValue('padding-right')
+    window.getComputedStyle(document.body, null).getPropertyValue('padding-right')
   );
   const backdrop = document.createElement('div');
 
@@ -13,27 +11,16 @@ ready(function () {
     const target = event.target.closest('a[data-modal], button[data-modal]');
 
     if (target && target.dataset.modal === 'open') {
-      showModal(
-        document.getElementById(
-          (target.hash || target.dataset.modalTarget).slice(1)
-        )
-      );
+      showModal(document.getElementById((target.hash || target.dataset.modalTarget).slice(1)));
     }
 
-    if (
-      (target && target.dataset.modal === 'close') ||
-      event.target.matches('[aria-modal]')
-    ) {
+    if ((target && target.dataset.modal === 'close') || event.target.matches('[aria-modal]')) {
       closeAllModals();
     }
 
     function showModal(targetModalNode) {
-      if (
-        document.body.clientHeight - document.documentElement.clientHeight >
-        0
-      ) {
-        document.body.style.paddingRight =
-          bodyPaddingRightOriginal + getScrollSize() + 'px';
+      if (document.body.clientHeight - document.documentElement.clientHeight > 0) {
+        document.body.style.paddingRight = bodyPaddingRightOriginal + getScrollSize() + 'px';
       }
       document.body.classList.add('modal-open');
 

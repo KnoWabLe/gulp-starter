@@ -1,8 +1,6 @@
 const ready = function (fn) {
   if (
-    document.attachEvent
-      ? document.readyState === 'complete'
-      : document.readyState !== 'loading'
+    document.attachEvent ? document.readyState === 'complete' : document.readyState !== 'loading'
   ) {
     fn();
   } else {
