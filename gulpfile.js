@@ -258,8 +258,8 @@ function serve() {
     { events: ['change', 'add'], delay: 100 },
     series(
       compilePugFast,
-      parallel(writeSassImportsFile),
-      parallel(compileSass, buildJs),
+      // parallel(writeSassImportsFile),
+      // parallel(compileSass, buildJs),
       reload
     )
   );
@@ -270,8 +270,8 @@ function serve() {
     { delay: 100 },
     series(
       compilePug,
-      parallel(writeSassImportsFile),
-      parallel(compileSass, buildJs),
+      // parallel(writeSassImportsFile),
+      // parallel(compileSass, buildJs),
       reload
     )
   );
@@ -301,7 +301,7 @@ function serve() {
   watch(
     [`${config.src.blocks}/**/*.scss`],
     { events: ['change'], delay: 100 },
-    series(compileSass)
+    compileSass
   );
 
   // Стили Блоков: добавление
@@ -315,7 +315,7 @@ function serve() {
   watch(
     [`${config.src.sass}/**/*.scss`, `!${config.src.sass}/style.scss`],
     { events: ['all'], delay: 100 },
-    series(compileSass)
+    compileSass
   );
 
   watch(
@@ -328,12 +328,6 @@ function serve() {
     `${config.src.js}/**/*.js`,
     { events: ['all'], delay: 100 },
     series(buildJs, reload)
-  );
-
-  watch(
-    `${config.src.sass}/**/*.{sass,scss}`,
-    { events: ['all'], delay: 100 },
-    series(compileSass)
   );
 
   watch(
