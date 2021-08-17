@@ -1,0 +1,61 @@
+// width
+@mixin r($width) {
+  @media only screen and (max-width: $width + 'px') {
+    @content;
+  }
+}
+
+@mixin rmin($width) {
+  @media only screen and (min-width: $width + 'px') {
+    @content;
+  }
+}
+
+// height
+@mixin rh($height) {
+  @media only screen and (max-height: $height + 'px') {
+    @content;
+  }
+}
+
+@mixin rhmin($height) {
+  @media only screen and (min-height: $height + 'px') {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @include rmin(1400) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @include rmin(1200) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @include rmin(992) {
+    @content;
+  }
+}
+
+@mixin md {
+  @include rmin(768) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @include rmin(576) {
+    @content;
+  }
+}
+
+@mixin xs {
+  @include r(575) {
+    @content;
+  }
+}
