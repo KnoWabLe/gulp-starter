@@ -1,23 +1,22 @@
 //- Все примеси в этом файле должны начинаться c имени блока (modal)
 mixin modal(id, title, mods)
-
   //- Принимает:
   //-   id      {string} - идентификатор
   //-   title   {string} - заголовок
   //-   mods    {string} - список модификаторов
   //- Вызов:
-        +modal('modal-demo-01', 'Заголовок', 'some')
-          .modal__body
-            p С «Шапкой», «подвалом» и внутр. отступами на контенте.
-          footer.modal__footer
-            button.btn(type='button', data-modal='close') Закрыть
-        +modal('modal-demo-02')
-          p Без «шапки», «подвала» и внутр. отступов на контенте.
-      Показать модальное окно:
-        button.btn(type='button', data-modal-target='#modal-demo-01', data-modal='open') Показать
-        a.btn(href='#modal-demo-01', data-modal='open') Показать
-      Скрыть все модальные окна:
-        button(type='button', data-modal='close') Скрыть
+      +modal('modal-demo-01', 'Заголовок', 'some')
+        .modal__body
+          p С «Шапкой», «подвалом» и внутр. отступами на контенте.
+        footer.modal__footer
+          button.btn(type='button', data-modal='close') Закрыть
+      +modal('modal-demo-02')
+        p Без «шапки», «подвала» и внутр. отступов на контенте.
+    Показать модальное окно:
+      button.btn(type='button', data-modal-target='#modal-demo-01', data-modal='open') Показать
+      a.btn(href='#modal-demo-01', data-modal='open') Показать
+    Скрыть все модальные окна:
+      button(type='button', data-modal='close') Скрыть
   -
     // список модификаторов
     var allMods = '';
@@ -30,7 +29,7 @@ mixin modal(id, title, mods)
   section.modal(id=id, class=allMods, tabindex='-1', aria-hidden='true')&attributes(attributes)
     .modal__dialog
       .modal__content
-        +close('Закрыть', 'sm')(class='modal__close', data-modal='close')
+        +close('Закрыть', 'sm').modal__close(data-modal='close')
         if title
           header.modal__header
             h3.modal__title!= title

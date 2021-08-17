@@ -177,7 +177,7 @@ function writeSassImportsFile(cb) {
       .replace(/\n\n$/, '\n */\n\n')}`;
     let styleImports = msg;
     newScssImportsList.forEach(function (src) {
-      styleImports += `@import "${src}";\n`;
+      styleImports += `@import '${src}';\n`;
     });
     styleImports += msg;
     fs.writeFileSync(`${config.src.sass}/style.scss`, styleImports);
