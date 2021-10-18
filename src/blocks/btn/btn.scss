@@ -1,6 +1,8 @@
 .btn {
   box-sizing: border-box;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
   max-width: 100%;
   margin: 0;
   border: 0;
